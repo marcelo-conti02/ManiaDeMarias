@@ -1,0 +1,15 @@
+.header{
+   display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30vw;
+    background-color: pink;
+}
+.input{
+    display: block;
+}
+body{
+    margin: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
