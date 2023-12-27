@@ -6,7 +6,7 @@ export default function ManiaDeMarias() {
     const [aux, setAux] = useState('');
 
     function handleClick() {
-        setAux(nome);
+       setAux(nome);
     }
 
     return (
