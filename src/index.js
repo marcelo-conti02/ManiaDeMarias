@@ -9,4 +9,5 @@ root.render(
   <StrictMode>
     <App />
   </StrictMode>
+  //comentario aleatorio
 );
