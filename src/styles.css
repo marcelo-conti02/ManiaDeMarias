@@ -1,15 +1,24 @@
-.header{
-   display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30vw;
-    background-color: pink;
-}
-.input{
-    display: block;
-}
-body{
-    margin: 0;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+.productImg {
+    width: 20vw;
+    height: 20vw;
 }
 
+.tableCell {
+    text-align: center;
+}
+
+#productsTable {
+    display: flex;
+    justify-content: space-around;
+}
+
+#searchBar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.searchInput {
+    min-height: 3vh;
+}
