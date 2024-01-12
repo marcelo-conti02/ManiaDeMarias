@@ -1,57 +1,116 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+const produtos = [{ name: 'Pijama bolinha', id: 1, type: 'pijama', valor: 'R$40.00', imgUrl: 'img/pijamaBolinha1.jpg' },
+{ name: 'Bermuda azul', id: 2, type: 'bermuda', valor: 'R$50.00', imgUrl: 'img/bermudaAzul.jpg' },
+{ name: 'Shorts listrado', id: 3, type: 'pijama', valor: 'R$60.00', imgUrl: 'img/shortsListrado.jpg' }
+];
 
 
 export default function ManiaDeMarias() {
-    const [nome, setNome] = useState('');
-    const [aux, setAux] = useState('');
-
-    function handleClick() {
-       setAux(nome);
-    }
-
     return (
         <>
-            <div className='header'>
-                <Input nome={nome} setNome={setNome} onClick={handleClick} />
-                <h1 className='mensagem'>Olá, {aux}</h1>
-            </div>
+            <FilterableProductTable products={produtos} />
         </>
     );
 }
 
-
-function Input({ nome, setNome, onClick }) {
+function FilterableProductTable({products}) {
+    const [searchText, setSearchText] = useState('');
 
     return (
-        <>
-            <div className='input'>
-                <label>Nome: </label>
+        <div>
+            <SearchBar setSearchText={setSearchText}/>
+            <ProductsTable products={products} searchText={searchText}/>
+        </div>
+    );
+}
+
+function SearchBar({setSearchText}) {
+
+    const { 
+        register,
+        handleSubmit,
+        reset,
+        formState:{ errors, isSubmitted}
+    } = useForm({
+        defaultValues:{
+            filterText: ''
+        }
+    });
+
+    if(isSubmitted){
+        reset(undefined, {keepErrors: true});
+    }
+
+    return (
+        <form id='searchBar' onSubmit={handleSubmit(data => setSearchText(data.filterText))}>
+            <b>Pesquisa:</b>
+            <div>
                 <input
                     type='text'
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                    placeholder='Insira seu nome'
-                    required />
-                <button onClick={onClick}>Submit</button>
+                    id='searchInput' 
+                    placeHolder='Digite um produto'
+                    {...register('filterText', { required: 'Preencha esse campo!' })} />
+                <p>{errors.filterText?.message}</p>
             </div>
-        </>
+            <button type='submit' id='searchButton'>🔍︎</button>
+        </form>
     );
 }
 
-function Multiplica() {
-    const [valor, setValor] = useState(2);
+function ProductsTable({ products, searchText }) {
+    const productsOnSearch = [];
 
-    function clicou() {
-        setValor(valor * 2);
+    products.forEach((product) => {
+        if (product.name.toLowerCase().indexOf(searchText.toLowerCase()) === -1) {
+            return;
+        }
+        productsOnSearch.push(
+            <ProductOutput name={product.name} imgUrl={product.imgUrl} valor={product.valor} />
+        );
+    });
+    return (
+        <table className='productsTable'>{productsOnSearch}</table>
+    );
+}
+
+function ProductOutput({ name, imgUrl, valor }) {
+    return (
+        <td className='tableCell'>
+            <h1>{name}</h1>
+            <img
+                className='productImg'
+                src={imgUrl}
+                alt={name}
+            />
+            <br />
+            <b>Preço: {valor}</b>
+        </td>
+    );
+}
+
+
+
+
+/*function SearchBar({ onFilterTextChange }) {
+
+    function handleSubmit(e) {
+        onFilterTextChange(e.target[0].value);
     }
 
     return (
-        <>
-            <h1>{valor}</h1>
-            <button onClick={clicou}>multiplica por 2</button>
-        </>
+        <form id='searchBar' onSubmit={e => {
+            e.preventDefault();
+            handleSubmit(e);
+        }}>
+            <b>Pesquisa:</b>
+            <input
+                type='text'
+                id='searchInput'
+                placeHolder='Digite um produto'
+                required />
+            <button type='submit' id='searchButton'>🔍︎</button>
+        </form>
     );
-
-}
-
-
+}*/
