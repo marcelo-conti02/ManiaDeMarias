@@ -31,24 +31,30 @@ function SearchBar({setSearchText}) {
     const { 
         register,
         handleSubmit,
-        formState:{ errors }
+        reset,
+        formState:{ errors, isSubmitted}
     } = useForm({
         defaultValues:{
             filterText: ''
         }
     });
 
+    if(isSubmitted){
+        reset(undefined, {keepErrors: true});
+    }
 
     return (
         <form id='searchBar' onSubmit={handleSubmit(data => setSearchText(data.filterText))}>
             <b>Pesquisa:</b>
-            <input
-                type='text'
-                id='searchInput' 
-                placeHolder='Digite um produto'
-                {...register('filterText', { required: 'Preencha esse campo!' })} />
+            <div>
+                <input
+                    type='text'
+                    id='searchInput' 
+                    placeHolder='Digite um produto'
+                    {...register('filterText', { required: 'Preencha esse campo!' })} />
+                <p>{errors.filterText?.message}</p>
+            </div>
             <button type='submit' id='searchButton'>🔍︎</button>
-            <p>{errors.filterText?.message}</p>
         </form>
     );
 }
