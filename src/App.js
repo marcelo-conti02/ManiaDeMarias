@@ -10,25 +10,43 @@ export default function ManiaDeMarias() {
     return (
         <>
             <Search />
-            <table id='productsTable'>
-                <ProductsTable produtos={produtos} />
-            </table>
+            <ProductsTable produtos={produtos} />
         </>
     );
 }
 
-function Search() {
+function FilterableProductTable({ products }) {
+    const [filterText, setFilterText] = useState('');
+
     return (
-        <div id='searchBar'>
-            <label>Pesquisa</label>
-            <input className='searchInput' placeHolder='Digite um produto' />
-            <button className='searchInput'>🔍︎</button>
+        <div>
+            <SearchBar
+                filterText={filterText} />
+            <ProductsTable
+                products={products}
+                filterText={filterText} />
         </div>
     );
 }
 
-function ProductsTable({ produtos }) {
-    const table = produtos.map(product =>
+function SearchBar() {
+    function handleSubmit() {
+        return(null);
+    }
+    return (
+        <form id='searchBar' onSubmit={e => {
+            e.preventDefault();
+            handleSubmit();
+        }}>
+            <b>Pesquisa:</b>
+            <input id='searchInput' placeHolder='Digite um produto' value={filterText} />
+            <button id='searchButton'>🔍︎</button>
+        </form>
+    );
+}
+
+function ProductsTable({ products, filterText }) {
+    const table = products.map(product =>
         <td className='tableCell'>
             <h1>{product.name}</h1>
             <img
@@ -41,7 +59,7 @@ function ProductsTable({ produtos }) {
         </td>
     );
     return (
-        <>{table}</>
+        <table className='productsTable'>{table}</table>
     );
 }
 
