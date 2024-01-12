@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 const produtos = [{ name: 'Pijama bolinha', id: 1, type: 'pijama', valor: 'R$40.00', imgUrl: 'img/pijamaBolinha1.jpg' },
 { name: 'Bermuda azul', id: 2, type: 'bermuda', valor: 'R$50.00', imgUrl: 'img/bermudaAzul.jpg' },
@@ -14,47 +15,49 @@ export default function ManiaDeMarias() {
     );
 }
 
-function FilterableProductTable({ products }) {
-    const [filterText, setFilterText] = useState('');
+function FilterableProductTable({products}) {
+    const [searchText, setSearchText] = useState('');
 
     return (
         <div>
-            <SearchBar
-                filterText={filterText}
-                onFilterTextChange={setFilterText} />
-            <ProductsTable
-                products={products}
-                filterText={filterText} />
+            <SearchBar setSearchText={setSearchText}/>
+            <ProductsTable products={products} searchText={searchText}/>
         </div>
     );
 }
 
-function SearchBar({ onFilterTextChange }) {
-    function handleSubmit(e) {
-        onFilterTextChange(e.target[0].value);
-    }
+function SearchBar({setSearchText}) {
+
+    const { 
+        register,
+        handleSubmit,
+        formState:{ errors }
+    } = useForm({
+        defaultValues:{
+            filterText: ''
+        }
+    });
+
 
     return (
-        <form id='searchBar' onSubmit={e => {
-            e.preventDefault();
-            handleSubmit(e);
-        }}>
+        <form id='searchBar' onSubmit={handleSubmit(data => setSearchText(data.filterText))}>
             <b>Pesquisa:</b>
             <input
                 type='text'
-                id='searchInput'
+                id='searchInput' 
                 placeHolder='Digite um produto'
-                required />
+                {...register('filterText', { required: 'Preencha esse campo!' })} />
             <button type='submit' id='searchButton'>🔍︎</button>
+            <p>{errors.filterText?.message}</p>
         </form>
     );
 }
 
-function ProductsTable({ products, filterText }) {
+function ProductsTable({ products, searchText }) {
     const productsOnSearch = [];
 
     products.forEach((product) => {
-        if (product.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
+        if (product.name.toLowerCase().indexOf(searchText.toLowerCase()) === -1) {
             return;
         }
         productsOnSearch.push(
@@ -84,4 +87,24 @@ function ProductOutput({ name, imgUrl, valor }) {
 
 
 
+/*function SearchBar({ onFilterTextChange }) {
 
+    function handleSubmit(e) {
+        onFilterTextChange(e.target[0].value);
+    }
+
+    return (
+        <form id='searchBar' onSubmit={e => {
+            e.preventDefault();
+            handleSubmit(e);
+        }}>
+            <b>Pesquisa:</b>
+            <input
+                type='text'
+                id='searchInput'
+                placeHolder='Digite um produto'
+                required />
+            <button type='submit' id='searchButton'>🔍︎</button>
+        </form>
+    );
+}*/
