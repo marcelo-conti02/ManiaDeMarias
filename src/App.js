@@ -1,16 +1,15 @@
 import { useState } from 'react';
 
-const produtos = [{ name: 'Pijama bolinha', id: 1, type: 'pijama', valor: 40, imgUrl: 'img/pijamaBolinha1.jpg' },
-{ name: 'Bermuda azul', id: 2, type: 'bermuda', valor: 50, imgUrl: 'img/bermudaAzul.jpg' },
-{ name: 'Shorts listrado', id: 3, type: 'pijama', valor: 60, imgUrl: 'img/shortsListrado.jpg' }
+const produtos = [{ name: 'Pijama bolinha', id: 1, type: 'pijama', valor: 'R$40.00', imgUrl: 'img/pijamaBolinha1.jpg' },
+{ name: 'Bermuda azul', id: 2, type: 'bermuda', valor: 'R$50.00', imgUrl: 'img/bermudaAzul.jpg' },
+{ name: 'Shorts listrado', id: 3, type: 'pijama', valor: 'R$60.00', imgUrl: 'img/shortsListrado.jpg' }
 ];
 
 
 export default function ManiaDeMarias() {
     return (
         <>
-            <Search />
-            <ProductsTable produtos={produtos} />
+            <FilterableProductTable products={produtos} />
         </>
     );
 }
@@ -21,7 +20,8 @@ function FilterableProductTable({ products }) {
     return (
         <div>
             <SearchBar
-                filterText={filterText} />
+                filterText={filterText}
+                onFilterTextChange={setFilterText} />
             <ProductsTable
                 products={products}
                 filterText={filterText} />
@@ -29,37 +29,55 @@ function FilterableProductTable({ products }) {
     );
 }
 
-function SearchBar() {
-    function handleSubmit() {
-        return(null);
+function SearchBar({ onFilterTextChange }) {
+    function handleSubmit(e) {
+        onFilterTextChange(e.target[0].value);
     }
+
     return (
         <form id='searchBar' onSubmit={e => {
             e.preventDefault();
-            handleSubmit();
+            handleSubmit(e);
         }}>
             <b>Pesquisa:</b>
-            <input id='searchInput' placeHolder='Digite um produto' value={filterText} />
-            <button id='searchButton'>🔍︎</button>
+            <input
+                type='text'
+                id='searchInput'
+                placeHolder='Digite um produto'
+                required />
+            <button type='submit' id='searchButton'>🔍︎</button>
         </form>
     );
 }
 
 function ProductsTable({ products, filterText }) {
-    const table = products.map(product =>
+    const productsOnSearch = [];
+
+    products.forEach((product) => {
+        if (product.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
+            return;
+        }
+        productsOnSearch.push(
+            <ProductOutput name={product.name} imgUrl={product.imgUrl} valor={product.valor} />
+        );
+    });
+    return (
+        <table className='productsTable'>{productsOnSearch}</table>
+    );
+}
+
+function ProductOutput({ name, imgUrl, valor }) {
+    return (
         <td className='tableCell'>
-            <h1>{product.name}</h1>
+            <h1>{name}</h1>
             <img
                 className='productImg'
-                src={product.imgUrl}
-                alt={product.name}
+                src={imgUrl}
+                alt={name}
             />
             <br />
-            <b>Preço: R${product.valor}</b>
+            <b>Preço: {valor}</b>
         </td>
-    );
-    return (
-        <table className='productsTable'>{table}</table>
     );
 }
 
