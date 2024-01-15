@@ -20,9 +20,21 @@ function FilterableProductTable({products}) {
 
     return (
         <div>
-            <SearchBar setSearchText={setSearchText}/>
+            <Header setSearchText={setSearchText}/>
             <ProductsTable products={products} searchText={searchText}/>
         </div>
+    );
+}
+
+function Header({setSearchText})
+{
+    return(
+        <>
+            <div id='header'>
+                <SearchBar setSearchText={setSearchText}/>
+            </div>
+            <h1 id='titulo'>Mania de Marias</h1>
+        </>
     );
 }
 
@@ -32,7 +44,7 @@ function SearchBar({setSearchText}) {
         register,
         handleSubmit,
         reset,
-        formState:{ errors, isSubmitted}
+        formState:{ errors, isSubmitted }
     } = useForm({
         defaultValues:{
             filterText: ''
@@ -92,25 +104,3 @@ function ProductOutput({ name, imgUrl, valor }) {
 
 
 
-
-/*function SearchBar({ onFilterTextChange }) {
-
-    function handleSubmit(e) {
-        onFilterTextChange(e.target[0].value);
-    }
-
-    return (
-        <form id='searchBar' onSubmit={e => {
-            e.preventDefault();
-            handleSubmit(e);
-        }}>
-            <b>Pesquisa:</b>
-            <input
-                type='text'
-                id='searchInput'
-                placeHolder='Digite um produto'
-                required />
-            <button type='submit' id='searchButton'>🔍︎</button>
-        </form>
-    );
-}*/

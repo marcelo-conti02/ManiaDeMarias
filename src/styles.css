@@ -1,20 +1,27 @@
-.productImg {
-    width: 20vw;
-    height: 20vw;
+body {
+    font-family: Satisfy;
+    color: black;
+    background-color: lightpink;
+    margin: 0;
 }
-
-.tableCell {
+/*--------------header---------------------------*/
+#titulo{
     text-align: center;
+    font-size: 60px;
+    margin-top: 5px;
 }
 
-.productsTable {
+#header {
+    height: 8vh;
     display: flex;
-    justify-content: space-around;
+    background-color: purple;
+    border-color: black;
+    border-bottom: solid;
 }
 
 #searchBar {
+    margin-right: 50px;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     gap: 10px;
 }
@@ -28,7 +35,14 @@
     width: 4vw;
     height: 4vh;
 }
+/*---------------------------------------------*/
+.productImg {
+    width: 20vw;
+    height: 20vw;
+}
 
-b {
-    font-size: large;
+.productsTable {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
 }
