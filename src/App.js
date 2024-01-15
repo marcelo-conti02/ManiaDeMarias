@@ -15,57 +15,53 @@ export default function ManiaDeMarias() {
     );
 }
 
-function FilterableProductTable({products}) {
+function FilterableProductTable({ products }) {
     const [searchText, setSearchText] = useState('');
 
     return (
         <div>
-            <Header setSearchText={setSearchText}/>
-            <ProductsTable products={products} searchText={searchText}/>
+            <Header setSearchText={setSearchText} />
+            <ProductsTable products={products} searchText={searchText} />
         </div>
     );
 }
 
-function Header({setSearchText})
-{
-    return(
+function Header({ setSearchText }) {
+    return (
         <>
             <div id='header'>
-                <SearchBar setSearchText={setSearchText}/>
+                <SearchBar setSearchText={setSearchText} />
             </div>
             <h1 id='titulo'>Mania de Marias</h1>
         </>
     );
 }
 
-function SearchBar({setSearchText}) {
+function SearchBar({ setSearchText }) {
 
-    const { 
+    const {
         register,
         handleSubmit,
         reset,
-        formState:{ errors, isSubmitted }
+        formState: { errors, isSubmitted }
     } = useForm({
-        defaultValues:{
+        defaultValues: {
             filterText: ''
         }
     });
 
-    if(isSubmitted){
-        reset(undefined, {keepErrors: true});
+    if (isSubmitted) {
+        reset(undefined, { keepErrors: true });
     }
 
     return (
         <form id='searchBar' onSubmit={handleSubmit(data => setSearchText(data.filterText))}>
             <b>Pesquisa:</b>
-            <div>
-                <input
-                    type='text'
-                    id='searchInput' 
-                    placeHolder='Digite um produto'
-                    {...register('filterText', { required: 'Preencha esse campo!' })} />
-                <p>{errors.filterText?.message}</p>
-            </div>
+            <input
+                type='text'
+                id='searchInput'
+                placeHolder='Digite um produto'
+                {...register('filterText')} />
             <button type='submit' id='searchButton'>🔍︎</button>
         </form>
     );
