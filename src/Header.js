@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import './header.css';
 
 export default function Header({ setSearchText }) {
     return (

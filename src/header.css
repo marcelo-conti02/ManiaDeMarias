@@ -1,10 +1,3 @@
-body {
-    font-family: Satisfy;
-    color: black;
-    background-color: lightpink;
-    margin: 0;
-}
-/*--------------header---------------------------*/
 #titulo{
     text-align: center;
     font-size: 60px;
@@ -42,20 +35,4 @@ body {
     width: 3vw;
     border-radius: 10px;
     background-color: lightpink;
-}
-
-.errorMesage{
-    font-size: 20px;
-    margin-left: 0.5vw;
-}
-/*---------------------------------------------*/
-.productImg {
-    width: 20vw;
-    height: 20vw;
-}
-
-.productsTable {
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
 }

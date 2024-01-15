@@ -1,3 +1,5 @@
+import './productsTable.css';
+
 export default function ProductsTable({ products, searchText }) {
     const productsOnSearch = [];
 

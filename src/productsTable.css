@@ -1,0 +1,12 @@
+.productImg {
+    width: 20vw;
+    height: 20vw;
+}
+
+.productsTable {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+
