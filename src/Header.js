@@ -5,9 +5,12 @@ export default function Header({ setSearchText }) {
     return (
         <>
             <div id='header'>
+                <p>Produtos</p>
+                <p>Sobre</p>
+                <p>Fale conosco!</p>
                 <SearchBar setSearchText={setSearchText} />
             </div>
-            <h1 id='titulo'>Mania de Marias</h1>
+            <h1 id='titulo'>Mania de Maria</h1>
         </>
     );
 }
