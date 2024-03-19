@@ -1,46 +1,14 @@
-import { useForm } from 'react-hook-form';
 import './header.css';
+import { Link } from 'react-router-dom';
 
-export default function Header({ setSearchText }) {
+export default function Header() {
     return (
         <>
-            <div id='header'>
-                <p>Produtos</p>
-                <p>Sobre</p>
-                <p>Fale conosco!</p>
-                <SearchBar setSearchText={setSearchText} />
-            </div>
-            <h1 id='titulo'>Mania de Maria</h1>
+            <header id='header'>
+                <Link to={'/'}>Produtos</Link>
+                <Link to={'/info'}>Sobre</Link>
+                <Link to={'/contact'}>Fale conosco!</Link>
+            </header>
         </>
-    );
-}
-
-function SearchBar({ setSearchText }) {
-
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { isSubmitted }
-    } = useForm({
-        defaultValues: {
-            filterText: ''
-        }
-    });
-
-    if (isSubmitted) {
-        reset(undefined, { keepErrors: true });
-    }
-
-    return (
-        <form id='searchBar' onSubmit={handleSubmit(data => setSearchText(data.filterText))}>
-            <b>Pesquisa:</b>
-            <input
-                type='text'
-                id='searchInput'
-                placeHolder='Digite um produto'
-                {...register('filterText')} />
-            <button type='submit' id='searchButton'>🔍︎</button>
-        </form>
     );
 }

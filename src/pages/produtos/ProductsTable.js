@@ -1,6 +1,7 @@
 import './productsTable.css';
+import SearchBar from './SearchBar.js'
 
-export default function ProductsTable({ products, searchText }) {
+export default function ProductsTable({ products, searchText, setSearchText }) {
     const productsOnSearch = [];
 
     products.forEach((product) => {
@@ -12,7 +13,10 @@ export default function ProductsTable({ products, searchText }) {
         );
     });
     return (
-        <table className='productsTable'>{productsOnSearch}</table>
+        <>
+            <SearchBar setSearchText={setSearchText} />
+            <table className='productsTable'>{productsOnSearch}</table>
+        </>
     );
 }
 
