@@ -11,18 +11,21 @@ import java.util.Objects;
 
 @Entity
 public class Product {
+        public interface CreateProduct{}
+        public interface UpdateProduct{}
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
         @Column(name = "product_name", length = 100, nullable = false, unique = true)
-        @NotNull
-        @NotEmpty
+        @NotNull(groups = {CreateProduct.class, UpdateProduct.class})
+        @NotEmpty(groups = {CreateProduct.class, UpdateProduct.class})
         private String productName;
 
         @Column(name = "product_type", length = 100, nullable = false)
-        @NotNull
-        @NotEmpty
+        @NotNull(groups = {CreateProduct.class, UpdateProduct.class})
+        @NotEmpty(groups = {CreateProduct.class, UpdateProduct.class})
         private String productType;
 
         public Product() {

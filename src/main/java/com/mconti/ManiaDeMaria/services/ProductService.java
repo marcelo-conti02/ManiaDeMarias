@@ -18,7 +18,7 @@ public class ProductService {
     public Product findById(Long id){
         Optional<Product> product = this.productRepository.findById(id);
         return product.orElseThrow(() -> new RuntimeException(
-            "Usuário não encontrado! Id:" + id
+            "Produto não encontrado! Id:" + id
         ));
     }
 
