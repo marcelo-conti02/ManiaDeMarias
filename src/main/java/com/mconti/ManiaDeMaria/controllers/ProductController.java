@@ -23,7 +23,7 @@ import com.mconti.ManiaDeMaria.services.ProductService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/product")
 @Validated
 public class ProductController {
     @Autowired
