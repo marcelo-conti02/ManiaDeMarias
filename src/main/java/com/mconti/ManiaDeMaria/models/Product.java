@@ -28,13 +28,18 @@ public class Product {
         @NotEmpty(groups = {CreateProduct.class, UpdateProduct.class})
         private String productType;
 
+        @Column(name = "product_price", length = 50, nullable = false)
+        @NotNull(groups = {CreateProduct.class, UpdateProduct.class})
+        private Float productPrice;
+
         public Product() {
         }
 
-        public Product(Long id, String productName, String productType) {
+        public Product(Long id, String productName, String productType, Float productPrice) {
                 this.id = id;
                 this.productName = productName;
                 this.productType = productType;
+                this.productPrice = productPrice;
         }
 
         public Long getId() {
@@ -61,6 +66,14 @@ public class Product {
                 this.productType = productType;
         }
 
+        public Float getProductPrice() {
+                return this.productPrice;
+        }
+
+        public void setProductPrice(Float productPrice) {
+                this.productPrice = productPrice;
+        }
+
         @Override
         public boolean equals(Object o) {
                 if (o == this)
@@ -69,12 +82,14 @@ public class Product {
                         return false;
                 }
                 Product product = (Product) o;
-                return Objects.equals(id, product.id) && Objects.equals(productName, product.productName)
-                                && Objects.equals(productType, product.productType);
+                return Objects.equals(id, product.id) 
+                                && Objects.equals(productName, product.productName)
+                                && Objects.equals(productType, product.productType) 
+                                && Objects.equals(productPrice, product.productPrice);
         }
 
         @Override
         public int hashCode() {
-                return Objects.hash(id, productName, productType);
+                return Objects.hash(id, productName, productType, productPrice);
         }
 }

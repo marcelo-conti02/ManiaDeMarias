@@ -34,6 +34,7 @@ public class ProductService {
         Product newObj = findById(obj.getId());
         newObj.setProductName(obj.getProductName());
         newObj.setProductType(obj.getProductType());
+        newObj.setProductPrice(obj.getProductPrice());
         return this.productRepository.save(newObj);
     }
 
