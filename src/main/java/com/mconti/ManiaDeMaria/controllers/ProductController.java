@@ -1,6 +1,7 @@
 package com.mconti.ManiaDeMaria.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.mconti.ManiaDeMaria.models.Product;
 import com.mconti.ManiaDeMaria.models.Product.CreateProduct;
 import com.mconti.ManiaDeMaria.models.Product.UpdateProduct;
+import com.mconti.ManiaDeMaria.repositories.ProductRepository;
 import com.mconti.ManiaDeMaria.services.ProductService;
 
 import jakarta.validation.Valid;
@@ -29,8 +31,16 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @GetMapping
+    public List<Product> getProducts() {
+        return this.productRepository.findAll();
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Product> findById(@PathVariable Long id){
+    public ResponseEntity<Product> getProduct(@PathVariable Long id){
         Product obj = this.productService.findById(id);
         return ResponseEntity.ok().body(obj);
     }
