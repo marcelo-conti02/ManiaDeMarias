@@ -5,11 +5,11 @@ export default function ProductsTable({ products, searchText, setSearchText }) {
     const productsOnSearch = [];
 
     products.forEach((product) => {
-        if (product.name.toLowerCase().indexOf(searchText.toLowerCase()) === -1) {
+        if (product.productName.toLowerCase().indexOf(searchText.toLowerCase()) === -1) {
             return;
         }
         productsOnSearch.push(
-            <ProductOutput name={product.name} imgUrl={product.imgUrl} valor={product.valor} />
+            <ProductOutput key={product.id} name={product.productName} valor={product.productPrice} />
         );
     });
     return (
@@ -20,17 +20,16 @@ export default function ProductsTable({ products, searchText, setSearchText }) {
     );
 }
 
-function ProductOutput({ name, imgUrl, valor }) {
+function ProductOutput({ name, valor }) {
     return (
-        <td className='tableCell'>
-            <h1>{name}</h1>
-            <img
-                className='productImg'
-                src={imgUrl}
-                alt={name}
-            />
-            <br />
-            <b>Preço: {valor}</b>
-        </td>
+        <tbody>
+            <tr>
+                <td className='tableCell'>
+                    <h1>{name}</h1>
+                    <br />
+                    <b>Preço: {valor}</b>
+                </td>
+            </tr>
+        </tbody>
     );
 }

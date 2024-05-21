@@ -23,7 +23,7 @@ export default function SearchBar({ setSearchText }) {
             <input
                 type='text'
                 id='searchInput'
-                placeHolder='Digite um produto'
+                placeholder='Digite um produto'
                 {...register('filterText')} />
             <button type='submit' id='searchButton'>🔍︎</button>
         </form>
