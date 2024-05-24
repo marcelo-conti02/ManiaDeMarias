@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.List;
 
 import com.mconti.ManiaDeMaria.models.Product;
 import com.mconti.ManiaDeMaria.repositories.ProductRepository;
@@ -14,6 +15,10 @@ import com.mconti.ManiaDeMaria.repositories.ProductRepository;
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
+
+    public List<Product> findAll(){
+        return this.productRepository.findAll();
+    }
     
     public Product findById(Long id){
         Optional<Product> product = this.productRepository.findById(id);

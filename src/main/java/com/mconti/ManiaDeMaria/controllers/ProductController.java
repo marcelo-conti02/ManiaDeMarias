@@ -19,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.mconti.ManiaDeMaria.models.Product;
 import com.mconti.ManiaDeMaria.models.Product.CreateProduct;
 import com.mconti.ManiaDeMaria.models.Product.UpdateProduct;
-import com.mconti.ManiaDeMaria.repositories.ProductRepository;
 import com.mconti.ManiaDeMaria.services.ProductService;
 
 import jakarta.validation.Valid;
@@ -31,12 +30,10 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private ProductRepository productRepository;
-
     @GetMapping
-    public List<Product> getProducts() {
-        return this.productRepository.findAll();
+    public ResponseEntity<List<Product>> getProducts() {
+        List<Product> obj = this.productService.findAll();
+        return ResponseEntity.ok().body(obj);
     }
 
     @GetMapping("/{id}")
