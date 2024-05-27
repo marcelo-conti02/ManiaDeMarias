@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.mconti.ManiaDeMaria.models.Product;
 import com.mconti.ManiaDeMaria.repositories.ProductRepository;
+import com.mconti.ManiaDeMaria.services.exceptions.ObjectNotFoundException;
 
 
 @Service
@@ -22,7 +23,7 @@ public class ProductService {
     
     public Product findById(Long id){
         Optional<Product> product = this.productRepository.findById(id);
-        return product.orElseThrow(() -> new RuntimeException(
+        return product.orElseThrow(() -> new ObjectNotFoundException(
             "Produto não encontrado! Id:" + id
         ));
     }
