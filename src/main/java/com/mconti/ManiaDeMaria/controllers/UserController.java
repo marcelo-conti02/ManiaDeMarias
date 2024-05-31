@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mconti.ManiaDeMaria.models.Product.UpdateProduct;
 import com.mconti.ManiaDeMaria.models.User.CreateUser;
+import com.mconti.ManiaDeMaria.models.User.UpdateUser;
 import com.mconti.ManiaDeMaria.models.User;
 import com.mconti.ManiaDeMaria.services.UserService;
 
@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @Validated(UpdateProduct.class)
+    @Validated(UpdateUser.class)
     public ResponseEntity<Void> update(@Valid @RequestBody User obj, @PathVariable Long id){
         obj.setId(id);
         this.userService.update(obj);

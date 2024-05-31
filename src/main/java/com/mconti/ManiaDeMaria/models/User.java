@@ -1,7 +1,7 @@
 package com.mconti.ManiaDeMaria.models;
 
-import com.mconti.ManiaDeMaria.models.Product.CreateProduct;
-import com.mconti.ManiaDeMaria.models.Product.UpdateProduct;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,13 +22,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name", length = 100, nullable = false)
-    @NotNull(groups = { CreateProduct.class })
-    @NotEmpty(groups = { CreateProduct.class })
+    @Column(name = "user_name", length = 100, nullable = false, unique = true)
+    @NotNull(groups = { CreateUser.class })
+    @NotEmpty(groups = { CreateUser.class })
     private String userName;
 
     @Column(name = "user_password", length = 100, nullable = false)
-    @NotNull(groups = { CreateProduct.class, UpdateProduct.class })
-    @NotEmpty(groups = { CreateProduct.class, UpdateProduct.class })
+    @JsonProperty(access = Access.WRITE_ONLY)
+    @NotNull(groups = { CreateUser.class, UpdateUser.class })
+    @NotEmpty(groups = { CreateUser.class, UpdateUser.class })
     private String userPassword;
 }
