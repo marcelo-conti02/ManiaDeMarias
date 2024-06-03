@@ -29,12 +29,17 @@ public class SecurityConfig {
             "/user",
             "/login"
     };
+    private static final String[] PUBLIC_MATCHERS_GET = {
+            "/product"
+    };
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(withDefaults()).csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
                         .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                         .requestMatchers(PUBLIC_MATCHERS).permitAll()
                         .anyRequest().authenticated())
