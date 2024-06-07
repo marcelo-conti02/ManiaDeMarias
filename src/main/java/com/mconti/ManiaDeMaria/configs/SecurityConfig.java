@@ -2,11 +2,14 @@ package com.mconti.ManiaDeMaria.configs;
 
 import java.util.Arrays;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,16 +20,28 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.mconti.ManiaDeMaria.security.JWTUtil;
+import com.mconti.ManiaDeMaria.services.UserDetailsServiceImp;
+
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+    @Autowired
+    private UserDetailsServiceImp userDetailsService;
+
+    @Autowired
+    private JWTUtil jwtUtil;
+    
+    private AuthenticationManager authenticationManager;
 
     private static final String[] PUBLIC_MATCHERS = {
             "/"
     };
     private static final String[] PUBLIC_MATCHERS_POST = {
             "/user",
+            "/product",
             "/login"
     };
     private static final String[] PUBLIC_MATCHERS_GET = {
@@ -36,6 +51,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        
+        AuthenticationManagerBuilder authenticationManagerBuilder = http
+                .getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(this.userDetailsService)
+                .passwordEncoder(bCryptPasswordEncoder());
+        this.authenticationManager = authenticationManagerBuilder.build();
+
         http
                 .cors(withDefaults()).csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authz) -> authz
