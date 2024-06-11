@@ -1,5 +1,6 @@
 package com.mconti.ManiaDeMaria.security;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mconti.ManiaDeMaria.exceptions.GlobalExceptionHandler;
 import com.mconti.ManiaDeMaria.models.User;
 
-import io.jsonwebtoken.io.IOException;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,8 +42,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             Authentication authentication = this.authenticationManager.authenticate(authToken);
             return authentication;
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
