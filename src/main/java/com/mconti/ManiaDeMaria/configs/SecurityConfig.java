@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.mconti.ManiaDeMaria.security.JWTAuthenticationFilter;
 import com.mconti.ManiaDeMaria.security.JWTUtil;
 import com.mconti.ManiaDeMaria.services.UserDetailsServiceImp;
 
@@ -41,15 +42,13 @@ public class SecurityConfig {
     };
     private static final String[] PUBLIC_MATCHERS_POST = {
             "/user",
-            "/product",
             "/login"
     };
     private static final String[] PUBLIC_MATCHERS_GET = {
             "/product"
     };
 
-
-    @Bean
+    @Bean       
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         
         AuthenticationManagerBuilder authenticationManagerBuilder = http
@@ -57,7 +56,7 @@ public class SecurityConfig {
         authenticationManagerBuilder.userDetailsService(this.userDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder());
         this.authenticationManager = authenticationManagerBuilder.build();
-
+    
         http
                 .cors(withDefaults()).csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authz) -> authz
@@ -65,10 +64,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                         .requestMatchers(PUBLIC_MATCHERS).permitAll()
                         .anyRequest().authenticated())
+                .authenticationManager(this.authenticationManager)
+                .addFilter(new JWTAuthenticationFilter(this.authenticationManager, this.jwtUtil))
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
-
+    
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();

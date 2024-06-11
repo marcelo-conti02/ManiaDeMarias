@@ -14,36 +14,44 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JWTUtil {
+
     @Value("${jwt.secret}")
     private String secret;
 
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    private SecretKey getKeyBySecret(){
+    public String generateToken(String username) {
+        SecretKey key = getKeyBySecret();
+        return Jwts.builder()
+                .setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + this.expiration))
+                .signWith(key)
+                .compact();
+    }
+
+    private SecretKey getKeyBySecret() {
         SecretKey key = Keys.hmacShaKeyFor(this.secret.getBytes());
         return key;
     }
 
-    public String generateToken(String username){
-        SecretKey key = getKeyBySecret();
-        return Jwts.builder()
-            .setSubject(username)
-            .setExpiration(new Date(System.currentTimeMillis() + this.expiration))
-            .signWith(key)
-            .compact();
-    }
-
-    public boolean isValidToken(String token){
+    public boolean isValidToken(String token) {
         Claims claims = getClaims(token);
-        if(Objects.nonNull(claims)){
+        if (Objects.nonNull(claims)) {
             String username = claims.getSubject();
             Date expirationDate = claims.getExpiration();
             Date now = new Date(System.currentTimeMillis());
-            if(Objects.nonNull(username) && Objects.nonNull(expirationDate) && now.before(expirationDate))
+            if (Objects.nonNull(username) && Objects.nonNull(expirationDate) && now.before(expirationDate))
                 return true;
         }
         return false;
+    }
+
+    public String getUsername(String token) {
+        Claims claims = getClaims(token);
+        if (Objects.nonNull(claims))
+            return claims.getSubject();
+        return null;
     }
 
     private Claims getClaims(String token) {
@@ -54,4 +62,5 @@ public class JWTUtil {
             return null;
         }
     }
+
 }
