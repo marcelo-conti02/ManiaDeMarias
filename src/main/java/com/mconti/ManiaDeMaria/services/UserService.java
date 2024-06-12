@@ -13,11 +13,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconti.ManiaDeMaria.models.User;
+import com.mconti.ManiaDeMaria.models.dto.UserCreateDTO;
+import com.mconti.ManiaDeMaria.models.dto.UserUpdateDTO;
 import com.mconti.ManiaDeMaria.models.enums.ProfileEnum;
 import com.mconti.ManiaDeMaria.repositories.UserRepository;
 import com.mconti.ManiaDeMaria.security.UserSpringSecurity;
 import com.mconti.ManiaDeMaria.services.exceptions.AuthorizationException;
 import com.mconti.ManiaDeMaria.services.exceptions.ObjectNotFoundException;
+
+import jakarta.validation.Valid;
 
 @Service
 public class UserService {
@@ -70,5 +74,19 @@ public class UserService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public User fromDTO(@Valid UserCreateDTO obj) {
+        User user = new User();
+        user.setUserName(obj.getUsername());
+        user.setUserPassword(obj.getPassword());
+        return user;
+    }
+
+    public User fromDTO(@Valid UserUpdateDTO obj) {
+        User user = new User();
+        user.setId(obj.getId());
+        user.setUserPassword(obj.getPassword());
+        return user;
     }
 }
