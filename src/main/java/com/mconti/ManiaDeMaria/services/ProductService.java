@@ -6,9 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.List;
+import java.util.Objects;
 
 import com.mconti.ManiaDeMaria.models.Product;
+import com.mconti.ManiaDeMaria.models.enums.ProfileEnum;
 import com.mconti.ManiaDeMaria.repositories.ProductRepository;
+import com.mconti.ManiaDeMaria.security.UserSpringSecurity;
+import com.mconti.ManiaDeMaria.services.exceptions.AuthorizationException;
 import com.mconti.ManiaDeMaria.services.exceptions.ObjectNotFoundException;
 
 
@@ -30,6 +34,7 @@ public class ProductService {
 
     @Transactional
     public Product create(Product obj){
+        isAdm();
         obj.setId(null);
         obj = this.productRepository.save(obj);
         return obj;
@@ -37,6 +42,7 @@ public class ProductService {
 
     @Transactional
     public Product update(Product obj){
+        isAdm();
         Product newObj = findById(obj.getId());
         newObj.setProductName(obj.getProductName());
         newObj.setProductType(obj.getProductType());
@@ -45,7 +51,15 @@ public class ProductService {
     }
 
     public void delete(Long id){
+        isAdm();
         findById(id);
         this.productRepository.deleteById(id);
+    }
+
+    private void isAdm(){
+        UserSpringSecurity userSpringSecurity = UserService.authenticated();
+        if (Objects.isNull(userSpringSecurity) || !userSpringSecurity.hasRole(ProfileEnum.ADMIN))
+            throw new AuthorizationException("Acesso negado!");
+        return;
     }
 }

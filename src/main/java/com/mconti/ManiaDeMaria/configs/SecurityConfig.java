@@ -31,26 +31,22 @@ import com.mconti.ManiaDeMaria.services.UserDetailsServiceImp;
 public class SecurityConfig {
         @Autowired
         private UserDetailsServiceImp userDetailsService;
-
         @Autowired
         private JWTUtil jwtUtil;
-
         private AuthenticationManager authenticationManager;
 
-        private static final String[] PUBLIC_MATCHERS = {
-                        "/"
-        };
         private static final String[] PUBLIC_MATCHERS_POST = {
                         "/user",
                         "/login"
         };
         private static final String[] PUBLIC_MATCHERS_GET = {
-                        "/product"
+                        "/product",
+                        "/product/*",
+                        "/"
         };
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
                 AuthenticationManagerBuilder authenticationManagerBuilder = http
                                 .getSharedObject(AuthenticationManagerBuilder.class);
                 authenticationManagerBuilder.userDetailsService(this.userDetailsService)
@@ -62,7 +58,6 @@ public class SecurityConfig {
                                 .authorizeHttpRequests((authz) -> authz
                                                 .requestMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
                                                 .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-                                                .requestMatchers(PUBLIC_MATCHERS).permitAll()
                                                 .anyRequest().authenticated())
                                 .authenticationManager(this.authenticationManager)
                                 .addFilter(new JWTAuthenticationFilter(this.authenticationManager, this.jwtUtil))
