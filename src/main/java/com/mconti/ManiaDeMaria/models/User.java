@@ -26,18 +26,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class User {
+    public interface CreateUser {}
+    public interface UpdateUser {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "user_name", length = 100, nullable = false, unique = true)
-    @NotBlank()
+    @NotBlank(groups = { CreateUser.class })
     private String userName;
 
     @Column(name = "user_password", length = 100, nullable = false)
     @JsonProperty(access = Access.WRITE_ONLY)
-    @NotBlank()
+    @NotBlank(groups = { CreateUser.class, UpdateUser.class })
     private String userPassword;
 
     @ElementCollection(fetch = FetchType.EAGER)
