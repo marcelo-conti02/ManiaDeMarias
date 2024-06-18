@@ -15,21 +15,19 @@ export default function ProductsTable({ products, searchText, setSearchText }) {
     return (
         <>
             <SearchBar setSearchText={setSearchText} />
-            <table className='productsTable'>{productsOnSearch}</table>
+            <div className='productsTable'>{productsOnSearch}</div>
         </>
     );
 }
 
 function ProductOutput({ name, valor }) {
     return (
-        <tbody>
-            <tr>
-                <td className='tableCell'>
-                    <h1>{name}</h1>
-                    <br />
-                    <b>Preço: {valor}</b>
-                </td>
-            </tr>
-        </tbody>
+        <>
+            <div className='tableCell'>
+                <h1>{name}</h1>
+                <br />
+                <b>Preço: {valor}</b>
+            </div>
+        </>
     );
 }

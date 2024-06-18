@@ -9,4 +9,31 @@
     text-align: center;
 }
 
+#searchBar {
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#searchInput {
+   height: 3vh;
+   width: 10vw;
+   margin-left: 0.5vw;
+   border-radius: 10px;
+   background-color: lightpink;
+}
+
+#searchButton {
+    height: 4vh;
+    min-width: 3vw;
+    border-radius: 10px;
+    background-color: lightpink;
+}
+
+.tableCell{
+    min-width: 20vw;
+}
+
 
