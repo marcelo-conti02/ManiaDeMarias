@@ -1,5 +1,6 @@
 package com.mconti.ManiaDeMaria.services;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,20 +9,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mconti.ManiaDeMaria.models.Cart;
 import com.mconti.ManiaDeMaria.repositories.CartRepository;
+import com.mconti.ManiaDeMaria.services.exceptions.AuthorizationException;
 import com.mconti.ManiaDeMaria.services.exceptions.ObjectNotFoundException;
-import com.mconti.ManiaDeMaria.security.Authenticated;
+import com.mconti.ManiaDeMaria.security.UserSpringSecurity;
 
 @Service
 public class CartService {
     @Autowired
     private CartRepository cartRepository;
 
-    @Autowired
-    private Authenticated authenticated;
-
     @Transactional
     public Cart create(Cart cart) {
-        Long userId = authenticated.isAuthenticated();
+        Long userId = isAuthenticated();
         cart.setUserId(userId);
         cart.setTotalPrice((float) 0);
         cart = this.cartRepository.save(cart);
@@ -29,7 +28,7 @@ public class CartService {
     }
 
     public Cart findById(Long id) {
-        authenticated.isAuthenticated();
+        isAuthenticated();
         Optional<Cart> cart = this.cartRepository.findById(id);
         return cart.orElseThrow(() -> new ObjectNotFoundException(
                 "Cart not found! Id:" + id));
@@ -44,6 +43,14 @@ public class CartService {
     public Cart update(Cart obj, Float price) {
         Cart newObj = findById(obj.getId());
         newObj.setTotalPrice(obj.getTotalPrice() + price);
-        return this.cartRepository.save(newObj); 
+        return this.cartRepository.save(newObj);
     }
+
+    public Long isAuthenticated() {
+        UserSpringSecurity userSpringSecurity = UserService.authenticated();
+        if (Objects.isNull(userSpringSecurity))
+            throw new AuthorizationException("Acesso negado!");
+        return userSpringSecurity.getId();
+    }
+
 }
