@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconti.ManiaDeMaria.models.Cart;
-import com.mconti.ManiaDeMaria.models.enums.ProfileEnum;
 import com.mconti.ManiaDeMaria.repositories.CartRepository;
 import com.mconti.ManiaDeMaria.services.exceptions.AuthorizationException;
 import com.mconti.ManiaDeMaria.services.exceptions.ObjectNotFoundException;
@@ -35,9 +34,16 @@ public class CartService {
                 "Cart not found! Id:" + id));
     }
 
-    public void delete(Long id, Long userId) {
+    public void delete(Long id) {
         findById(id);
         this.cartRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Cart update(Cart obj, Float price) {
+        Cart newObj = findById(obj.getId());
+        newObj.setTotalPrice(obj.getTotalPrice() + price);
+        return this.cartRepository.save(newObj); 
     }
 
     private Long isAuthenticated(){
