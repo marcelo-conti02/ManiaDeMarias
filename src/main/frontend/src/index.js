@@ -2,8 +2,7 @@ import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import './globals.css';
 import App from "./App";
-import Info from "./pages/sobre/Info";
-import Form from "./pages/contato/Form";
+import Cart from "./pages/carrinho/Cart";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
@@ -12,12 +11,8 @@ const router = createBrowserRouter([
     element: <App/>,
   },
   {
-    path: "/info",
-    element: <Info/>,
-  },
-  {
-    path: "/contact",
-    element: <Form/>,
+    path: "/cart",
+    element: <Cart/>,
   },
 ])
 

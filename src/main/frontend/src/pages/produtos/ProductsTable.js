@@ -14,8 +14,9 @@ export default function ProductsTable({ products, searchText, setSearchText }) {
     });
     return (
         <>
+            <h1 id='titulo'>Mania de Maria</h1>
             <SearchBar setSearchText={setSearchText} />
-            <div className='productsTable'>{productsOnSearch}</div>
+            <table className='productsTable'>{productsOnSearch}</table>
         </>
     );
 }
@@ -23,11 +24,13 @@ export default function ProductsTable({ products, searchText, setSearchText }) {
 function ProductOutput({ name, valor }) {
     return (
         <>
-            <div className='tableCell'>
+            <td className='tableCell'>
                 <h1>{name}</h1>
                 <br />
                 <b>Preço: {valor}</b>
-            </div>
+                <br />
+                <button id='addButton'>Adcionar ao carrinho</button>
+            </td>
         </>
     );
 }

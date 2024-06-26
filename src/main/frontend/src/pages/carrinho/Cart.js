@@ -1,11 +1,11 @@
 import Header from "../../Header"
 
 
-export default function Info(){
+export default function Cart(){
     return(
         <>
             <Header/>
-            <h1>info</h1>
+            <h1>carrinho</h1>
         </>
     )
 }
