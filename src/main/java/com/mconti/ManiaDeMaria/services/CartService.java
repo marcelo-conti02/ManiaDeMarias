@@ -1,6 +1,5 @@
 package com.mconti.ManiaDeMaria.services;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,18 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mconti.ManiaDeMaria.models.Cart;
 import com.mconti.ManiaDeMaria.repositories.CartRepository;
-import com.mconti.ManiaDeMaria.services.exceptions.AuthorizationException;
 import com.mconti.ManiaDeMaria.services.exceptions.ObjectNotFoundException;
-import com.mconti.ManiaDeMaria.security.UserSpringSecurity;
 import com.mconti.ManiaDeMaria.security.Authenticated;
 
 @Service
 public class CartService {
     @Autowired
-    CartRepository cartRepository;
+    private CartRepository cartRepository;
 
     @Autowired
-    Authenticated authenticated;
+    private Authenticated authenticated;
 
     @Transactional
     public Cart create(Cart cart) {
