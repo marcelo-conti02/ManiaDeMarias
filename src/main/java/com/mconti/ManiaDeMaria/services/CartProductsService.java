@@ -2,6 +2,7 @@ package com.mconti.ManiaDeMaria.services;
 
 import com.mconti.ManiaDeMaria.models.Cart;
 import com.mconti.ManiaDeMaria.models.CartProducts;
+import com.mconti.ManiaDeMaria.models.Product;
 import com.mconti.ManiaDeMaria.services.CartService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ public class CartProductsService {
     private CartService cartService;
 
     @Transactional
-    public CartProducts create(CartProducts cartProduct) {
-       
+    public CartProducts create(CartProducts cartProduct, Cart cart, Product product) {
+        cartProduct.setCartId(cart.getId());
+        cartProduct.setProductId(product.getId());
+        return cartProduct;
     }
 }

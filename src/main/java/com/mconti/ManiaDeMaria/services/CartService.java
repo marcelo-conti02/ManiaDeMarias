@@ -12,15 +12,19 @@ import com.mconti.ManiaDeMaria.repositories.CartRepository;
 import com.mconti.ManiaDeMaria.services.exceptions.AuthorizationException;
 import com.mconti.ManiaDeMaria.services.exceptions.ObjectNotFoundException;
 import com.mconti.ManiaDeMaria.security.UserSpringSecurity;
+import com.mconti.ManiaDeMaria.security.Authenticated;
 
 @Service
 public class CartService {
     @Autowired
     CartRepository cartRepository;
 
+    @Autowired
+    Authenticated authenticated;
+
     @Transactional
     public Cart create(Cart cart) {
-        Long userId = isAuthenticated();
+        Long userId = authenticated.isAuthenticated();
         cart.setUserId(userId);
         cart.setTotalPrice((float) 0);
         cart = this.cartRepository.save(cart);
@@ -28,7 +32,7 @@ public class CartService {
     }
 
     public Cart findById(Long id) {
-        isAuthenticated();
+        authenticated.isAuthenticated();
         Optional<Cart> cart = this.cartRepository.findById(id);
         return cart.orElseThrow(() -> new ObjectNotFoundException(
                 "Cart not found! Id:" + id));
@@ -44,12 +48,5 @@ public class CartService {
         Cart newObj = findById(obj.getId());
         newObj.setTotalPrice(obj.getTotalPrice() + price);
         return this.cartRepository.save(newObj); 
-    }
-
-    private Long isAuthenticated(){
-        UserSpringSecurity userSpringSecurity = UserService.authenticated();
-        if (Objects.isNull(userSpringSecurity))
-            throw new AuthorizationException("Acesso negado!");
-        return userSpringSecurity.getId();
     }
 }
